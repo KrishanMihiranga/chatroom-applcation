@@ -1,5 +1,9 @@
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -8,7 +12,12 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        System.out.println("Hello");
+    public void start(Stage primaryStage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/StartingPage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Customer Support");
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: WHITE; -fx-background-radius: 15; -fx-border-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatServerController">
+   <children>
+      <Text fill="#726e6e" layoutX="31.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chatroom Server" textAlignment="CENTER" wrappingWidth="220.50341796875">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="29.0" />
+         </font>
+      </Text>
+      <JFXButton fx:id="btnsend" buttonType="RAISED" layoutX="340.0" layoutY="543.0" onAction="#btnsendOnAction" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #2ecc71;" text="Send" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <ImageView fitHeight="41.0" fitWidth="42.0" layoutX="370.0" layoutY="41.0">
+         <image>
+            <Image url="@assets/icons8-add-48.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <JFXTextField fx:id="txtField" labelFloat="true" layoutX="31.0" layoutY="543.0" onAction="#txtFieldOnAction" prefHeight="25.0" prefWidth="260.0" promptText="enter message here" />
+      <JFXTextArea fx:id="txtArea" editable="false" focusColor="WHITE" layoutX="31.0" layoutY="99.0" prefHeight="413.0" prefWidth="386.0" unFocusColor="WHITE" />
+      <JFXButton fx:id="btnAddClient" buttonType="RAISED" layoutX="370.0" layoutY="41.0" onAction="#btnAddClientOnAction" prefHeight="41.0" prefWidth="42.0" style="-fx-border-radius: 50; -fx-background-radius: 50;" textFill="TRANSPARENT">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+   </children>
+</AnchorPane>
