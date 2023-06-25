@@ -1,5 +1,6 @@
 package controller;
 
+import Server.Server;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -42,10 +43,18 @@ public class StartingPageController implements Initializable {
     }
 
     public void btnGetStartedOnAction(ActionEvent actionEvent) throws IOException {
+        initServer();
+
         Pane.getChildren().clear();
         Stage stage = (Stage) Pane.getScene().getWindow();
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/ChatServer.fxml"))));
         stage.show();
 
+    }
+
+    void initServer() throws IOException {
+        Server server = Server.getServerSocket();
+        Thread thread = new Thread(server);
+        thread.start();
     }
 }

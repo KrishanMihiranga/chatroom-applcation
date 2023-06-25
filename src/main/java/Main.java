@@ -18,6 +18,8 @@ public class Main extends Application {
         Stage stage = new Stage();
         stage.setTitle("Customer Support");
         stage.setScene(scene);
+        stage.setX(10);
+        stage.setY(10);
         stage.show();
     }
 }
