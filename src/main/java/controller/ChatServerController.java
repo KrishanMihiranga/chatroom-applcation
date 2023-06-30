@@ -7,15 +7,16 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.Objects;
 
 public class ChatServerController{
     @FXML
@@ -29,7 +30,10 @@ public class ChatServerController{
 
     @FXML
     private JFXButton btnAddClient;
-
+    @FXML
+    private VBox vBox;
+    @FXML
+    private JFXButton btnRegisterClient;
     @FXML
     void btnAddClientOnAction(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/addClient.fxml"));
@@ -43,17 +47,18 @@ public class ChatServerController{
 
     @FXML
     void btnsendOnAction(ActionEvent event) throws IOException {
-        String message = txtField.getText();
-        if (!message.isEmpty()|| message.equals(null)){
-            sendMessage(message);
-        }else{
+
+        String text = txtField.getText();
+        if (!Objects.equals(text, "")) {
+            sendMessage(text);
+        } else {
             ButtonType ok = new ButtonType("Ok");
             ButtonType cancel = new ButtonType("Cancel");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Empty message. Is it ok?", ok, cancel);
             alert.showAndWait();
             ButtonType result = alert.getResult();
-            if (result.equals(ok)){
-                sendMessage(message);
+            if (result.equals(ok)) {
+                sendMessage(text);
             }
         }
 
@@ -61,7 +66,12 @@ public class ChatServerController{
 
     private void sendMessage(String message) throws IOException {
         ClientHandler.broadcastMessage(message);
-        txtArea.appendText(message+"\n");
+        HBox hBox = new HBox();
+        hBox.setStyle("-fx-alignment: center-right;-fx-fill-height: true;-fx-min-height: 50;-fx-pref-width: 520;-fx-max-width: 520;-fx-padding: 10");
+        Label messageLbl = new Label(message);
+        messageLbl.setStyle("-fx-background-color:  #55efc4;-fx-background-radius:15;-fx-font-size: 18;-fx-font-weight: normal;-fx-text-fill: white;-fx-wrap-text: true;-fx-alignment: center-left;-fx-content-display: left;-fx-padding: 10;-fx-max-width: 350;");
+        hBox.getChildren().add(messageLbl);
+        vBox.getChildren().add(hBox);
         txtField.clear();
     }
     @FXML
@@ -70,7 +80,14 @@ public class ChatServerController{
     }
 
 
-
-
+    public void btnRegisterClientOnAction(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/registerForm.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Register Client");
+        stage.centerOnScreen();
+        stage.show();
+    }
 }
 

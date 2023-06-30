@@ -38,12 +38,25 @@ public class Client implements Runnable, Serializable {
     }
 
     @Override
+    protected void finalize() throws Throwable {
+        Thread.interrupted();
+        inputStream.close();
+        outputStream.close();
+        socket.close();
+    }
+
+    @Override
     public void run() {
         String message = "";
         while (!message.equals("exit")) {
             try {
                 message = inputStream.readUTF();
+                if (message.equals("*image*")) {
+                    receiveImage();
+                } else {
                     clientChatFormController.writeMessage(message);
+                }
+
             } catch (IOException e) {
                 try {
                     socket.close();
@@ -53,10 +66,19 @@ public class Client implements Runnable, Serializable {
             }
         }
     }
+
     public void sendMessage(String msg) throws IOException {
         outputStream.writeUTF(msg);
         outputStream.flush();
     }
+
+    public void sendImage(byte[] bytes) throws IOException {
+        outputStream.writeUTF("*image*");
+        outputStream.writeInt(bytes.length);
+        outputStream.write(bytes);
+        outputStream.flush();
+    }
+
     private void loadScene() throws IOException {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChatClient.fxml"));
@@ -70,6 +92,7 @@ public class Client implements Runnable, Serializable {
 
         stage.setOnCloseRequest(event -> {
             try {
+//                System.out.println(name + " closed");
                 inputStream.close();
                 outputStream.close();
                 socket.close();
@@ -80,5 +103,17 @@ public class Client implements Runnable, Serializable {
 
     }
 
+    public String getName() {
+        return name;
+    }
 
+    private void receiveImage() throws IOException {
+        String utf = inputStream.readUTF();
+        int size = inputStream.readInt();
+        byte[] bytes = new byte[size];
+        inputStream.readFully(bytes);
+        System.out.println(name + "- Image received: from " + utf);
+        clientChatFormController.setImage(bytes, utf);
+        // Handle the received image bytes as needed
+    }
 }

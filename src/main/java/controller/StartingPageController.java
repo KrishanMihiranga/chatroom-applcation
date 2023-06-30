@@ -29,6 +29,10 @@ public class StartingPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+       setAnimation();
+    }
+
+    void setAnimation() {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), image);
         scaleTransition.setFromX(1.0);
         scaleTransition.setFromY(1.0);

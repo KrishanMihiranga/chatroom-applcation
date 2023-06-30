@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientHandler implements java.lang.Runnable {
+public class ClientHandler implements Runnable {
 
     public static final List<ClientHandler> clientHandlerList = new ArrayList<>();
     private final Socket socket;
@@ -30,24 +30,45 @@ public class ClientHandler implements java.lang.Runnable {
 
     @Override
     public void run() {
-         while (socket.isConnected()) {
+        while (socket.isConnected()) {
             try {
                 String utf = inputStream.readUTF();
-                for (ClientHandler handler : clientHandlerList) {
-                    if (!handler.clientName.equals(clientName)) {
-                        handler.sendMessage(clientName, utf);
+                if (utf.equals("*image*")) {
+                    receiveImage();
+                } else {
+                    for (ClientHandler handler : clientHandlerList) {
+                        if (!handler.clientName.equals(clientName)) {
+                            handler.sendMessage(clientName, utf);
+                        }
                     }
                 }
-
             } catch (IOException e) {
                 clientHandlerList.remove(this);
                 break;
             }
         }
     }
+    private void receiveImage() throws IOException {
+        int size = inputStream.readInt();
+        byte[] bytes = new byte[size];
+        inputStream.readFully(bytes);
+        for (ClientHandler handler : clientHandlerList) {
+            if (!handler.clientName.equals(clientName)) {
+                handler.sendImage(clientName, bytes);
 
+            }
+        }
+    }
+    private void sendImage(String sender, byte[] bytes) throws IOException {
+        outputStream.writeUTF("*image*");
+        outputStream.writeUTF(sender);
+        outputStream.writeInt(bytes.length);
+        outputStream.write(bytes);
+        outputStream.flush();
+
+    }
     public void sendMessage(String sender, String msg) throws IOException {
-        outputStream.writeUTF(sender + ": " + msg);
+        outputStream.writeUTF(sender + " : " + msg);
         outputStream.flush();
     }
 
