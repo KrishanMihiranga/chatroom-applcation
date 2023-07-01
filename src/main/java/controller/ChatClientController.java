@@ -39,7 +39,11 @@ public class ChatClientController {
     private JFXButton btnSendImage;
     @FXML
     private VBox vBox;
+    private static VBox staticVbox;
 
+    public void initialize(){
+        staticVbox = vBox;
+    }
     public void btnsendOnAction(ActionEvent actionEvent) {
         try {
             String message = txtField.getText();
@@ -64,7 +68,7 @@ public class ChatClientController {
     }
 
 
-    void appendText(String message) {
+    public void appendText(String message) {
 //        me
         HBox hBox = new HBox();
         hBox.setStyle("-fx-alignment: center-right;-fx-fill-height: true;-fx-min-height: 50;-fx-pref-width: 520;-fx-max-width: 520;-fx-padding: 10");
@@ -83,14 +87,24 @@ public class ChatClientController {
     }
 
     public void writeMessage(String message) {
-        HBox hBox = new HBox();
-        hBox.setStyle("-fx-alignment: center-left;-fx-fill-height: true;-fx-min-height: 50;-fx-pref-width: 520;-fx-max-width: 520;-fx-padding: 10");
-        Label messageLbl = new Label(message);
-        messageLbl.setStyle("-fx-background-color:  #74b9ff;-fx-background-radius:0 20px 20px 20px;-fx-font-size: 18;-fx-font-weight: normal;-fx-text-fill: white;-fx-wrap-text: true;-fx-alignment: center-left;-fx-content-display: left;-fx-padding: 10;-fx-max-width: 350;");
-        hBox.getChildren().add(messageLbl);
-        Platform.runLater(() -> vBox.getChildren().add(hBox));
-    }
+        if (message.startsWith("SERVER")){
+            HBox hBox = new HBox();
+            hBox.setStyle("-fx-alignment: center-left;-fx-fill-height: true;-fx-min-height: 50;-fx-pref-width: 520;-fx-max-width: 520;-fx-padding: 10");
+            Label messageLbl = new Label(message);
+            messageLbl.setStyle("-fx-background-color:  #D980FA;-fx-background-radius:0 20px 20px 20px;-fx-font-size: 18;-fx-font-weight: normal;-fx-text-fill: white;-fx-wrap-text: true;-fx-alignment: center-left;-fx-content-display: left;-fx-padding: 10;-fx-max-width: 350;");
+            hBox.getChildren().add(messageLbl);
+            Platform.runLater(() -> vBox.getChildren().add(hBox));
 
+        }else{
+            HBox hBox = new HBox();
+            hBox.setStyle("-fx-alignment: center-left;-fx-fill-height: true;-fx-min-height: 50;-fx-pref-width: 520;-fx-max-width: 520;-fx-padding: 10");
+            Label messageLbl = new Label(message);
+            messageLbl.setStyle("-fx-background-color:  #74b9ff;-fx-background-radius:0 20px 20px 20px;-fx-font-size: 18;-fx-font-weight: normal;-fx-text-fill: white;-fx-wrap-text: true;-fx-alignment: center-left;-fx-content-display: left;-fx-padding: 10;-fx-max-width: 350;");
+            hBox.getChildren().add(messageLbl);
+            Platform.runLater(() -> vBox.getChildren().add(hBox));
+        }
+
+    }
 
     public void setImage(byte[] bytes, String sender) {
         HBox hBox = new HBox();
@@ -109,6 +123,7 @@ public class ChatClientController {
             vBox.getChildren().add(hBox);
         });
     }
+
     public void btnSendImageOnAction(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image File");

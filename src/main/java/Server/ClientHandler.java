@@ -8,6 +8,7 @@ import java.util.List;
 public class ClientHandler implements Runnable {
 
     public static final List<ClientHandler> clientHandlerList = new ArrayList<>();
+
     private final Socket socket;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
@@ -19,9 +20,16 @@ public class ClientHandler implements Runnable {
         outputStream = new DataOutputStream(socket.getOutputStream());
         clientName = inputStream.readUTF();
         clientHandlerList.add(this);
+
     }
 
     public static void broadcastMessage(String message) throws IOException {
+        for (ClientHandler handler : clientHandlerList) {
+            handler.sendMessage("SERVER", message);
+        }
+    }
+
+    public static void notifyJoins(String message) throws IOException {
         for (ClientHandler handler : clientHandlerList) {
             handler.sendMessage("SERVER", message);
         }
@@ -71,5 +79,6 @@ public class ClientHandler implements Runnable {
         outputStream.writeUTF(sender + " : " + msg);
         outputStream.flush();
     }
+
 
 }

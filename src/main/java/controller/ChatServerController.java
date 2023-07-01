@@ -4,6 +4,7 @@ import Server.ClientHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,11 @@ public class ChatServerController{
     private VBox vBox;
     @FXML
     private JFXButton btnRegisterClient;
+    private static VBox staticVbox;
+
+    public void initialize(){
+        staticVbox = vBox;
+    }
     @FXML
     void btnAddClientOnAction(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/addClient.fxml"));
@@ -79,7 +85,6 @@ public class ChatServerController{
         btnsendOnAction(event);
     }
 
-
     public void btnRegisterClientOnAction(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/registerForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -88,6 +93,34 @@ public class ChatServerController{
         stage.setTitle("Register Client");
         stage.centerOnScreen();
         stage.show();
+    }
+
+    public static void receiveMessage(String message){
+
+        if (message.endsWith("left")){
+            HBox hBox = new HBox();
+            hBox.setStyle("-fx-padding: 5px 0 0 10px; ");
+            hBox.setMaxWidth(300);
+
+            Label messageLbl = new Label(message);
+            messageLbl.setStyle("-fx-font-weight: bold;-fx-text-fill: red");
+
+            hBox.getChildren().add(messageLbl);
+
+            Platform.runLater(() -> staticVbox.getChildren().add(hBox));
+        }else{
+            HBox hBox = new HBox();
+            hBox.setStyle("-fx-padding: 5px 0 0 10px; ");
+            hBox.setMaxWidth(300);
+
+            Label messageLbl = new Label(message);
+            messageLbl.setStyle("-fx-font-weight: bold;-fx-text-fill: #15a9ee");
+
+            hBox.getChildren().add(messageLbl);
+
+            Platform.runLater(() -> staticVbox.getChildren().add(hBox));
+        }
+
     }
 }
 

@@ -1,8 +1,12 @@
 package Server;
 
+import controller.ChatClientController;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server implements Runnable {
     private static Server server;

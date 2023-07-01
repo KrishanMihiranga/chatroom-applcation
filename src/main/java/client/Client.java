@@ -1,7 +1,9 @@
 package client;
 
 
+import Server.ClientHandler;
 import controller.ChatClientController;
+import controller.ChatServerController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,12 +28,14 @@ public class Client implements Runnable, Serializable {
         socket = new Socket("localhost", 3002);
         inputStream = new DataInputStream(socket.getInputStream());
         outputStream = new DataOutputStream(socket.getOutputStream());
-
+        ChatServerController.receiveMessage(name+ " has Joined!");
+        ClientHandler.notifyJoins(name+ " has Joined!");
         outputStream.writeUTF(name);
         outputStream.flush();
 
         try {
             loadScene();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,7 +96,7 @@ public class Client implements Runnable, Serializable {
 
         stage.setOnCloseRequest(event -> {
             try {
-//                System.out.println(name + " closed");
+                shutdown(name+ " left");
                 inputStream.close();
                 outputStream.close();
                 socket.close();
@@ -101,6 +105,11 @@ public class Client implements Runnable, Serializable {
             }
         });
 
+    }
+
+    private void shutdown(String s) throws IOException {
+        ChatServerController.receiveMessage(name+ " has left");
+        ClientHandler.notifyJoins(name+ " has left");
     }
 
     public String getName() {
