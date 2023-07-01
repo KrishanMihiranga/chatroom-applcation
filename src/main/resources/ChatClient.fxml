@@ -1,26 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: WHITE; -fx-background-radius: 15; -fx-border-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatClientController">
+<AnchorPane fx:id="pane" prefHeight="708.0" prefWidth="431.0" style="-fx-background-color: WHITE; -fx-background-radius: 15; -fx-border-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatClientController">
    <children>
-      <Text fx:id="txtChatRoom" fill="#726e6e" layoutX="31.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chatroom Client" textAlignment="CENTER" wrappingWidth="220.50341796875">
+      <Text fx:id="txtChatRoom" fill="#726e6e" layoutX="31.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chatroom Client" textAlignment="CENTER" wrappingWidth="220.50341796875">
          <font>
             <Font name="Berlin Sans FB Demi Bold" size="29.0" />
          </font>
       </Text>
-      <JFXButton fx:id="btnsend" buttonType="RAISED" layoutX="340.0" layoutY="543.0" onAction="#btnsendOnAction" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #2ecc71;" text="Send" textFill="WHITE">
+      <JFXButton fx:id="btnsend" buttonType="RAISED" layoutX="334.0" layoutY="647.0" onAction="#btnsendOnAction" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #2ecc71;" text="Send" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXTextField fx:id="txtField" labelFloat="true" layoutX="31.0" layoutY="543.0" onAction="#txtFieldOnAction" prefHeight="25.0" prefWidth="260.0" promptText="enter message here" />
-      <JFXTextArea fx:id="txtArea" editable="false" focusColor="WHITE" layoutX="31.0" layoutY="99.0" prefHeight="413.0" prefWidth="386.0" unFocusColor="WHITE" />
+      <JFXTextField fx:id="txtField" labelFloat="true" layoutX="23.0" layoutY="650.0" onAction="#txtFieldOnAction" prefHeight="25.0" prefWidth="235.0" promptText="enter message here" />
+      <JFXButton fx:id="btnSendImage" buttonType="RAISED" layoutX="299.0" layoutY="648.0" onAction="#btnSendImageOnAction" prefHeight="33.0" prefWidth="33.0" style="-fx-background-color: #00a8ff;" text="+" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <ScrollPane layoutX="14.0" layoutY="86.0">
+         <content>
+            <VBox fx:id="vBox" prefHeight="550.0" prefWidth="403.0" />
+         </content>
+      </ScrollPane>
+      <ImageView fitHeight="40.0" fitWidth="42.0" layoutX="259.0" layoutY="645.0">
+         <image>
+            <Image url="@assets/emoji.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="emojiBtn" buttonType="RAISED" layoutX="263.0" layoutY="648.0" onAction="#emojiBtnOnAction" prefHeight="33.0" prefWidth="33.0" style="-fx-background-color: transparent;" textFill="#e4d03700">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
    </children>
 </AnchorPane>
