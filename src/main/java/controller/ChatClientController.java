@@ -7,6 +7,8 @@ import emoji.EmojiPicker;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -71,7 +74,6 @@ public class ChatClientController {
         }
     }
 
-
     public void appendText(String message) {
 //        me
         HBox hBox = new HBox();
@@ -111,21 +113,26 @@ public class ChatClientController {
     }
 
     public void setImage(byte[] bytes, String sender) {
-        HBox hBox = new HBox();
-        Label messageLbl = new Label(sender);
-        messageLbl.setStyle("-fx-background-color: #74b9ff; -fx-background-radius: 15; -fx-font-size: 18; -fx-font-weight: normal; -fx-text-fill: white; -fx-wrap-text: true; -fx-padding: 10; -fx-max-width: 350;");
-
-        hBox.setStyle("-fx-fill-height: true; -fx-min-height: 50; -fx-pref-width: 520; -fx-max-width: 520; -fx-padding: 10; " + (sender.equals("Client") ? "-fx-alignment: center-right;" : "-fx-alignment: center-left;"));
-
-        Platform.runLater(() -> {
+            HBox hBoxName = new HBox();
+            Label messageLbl = new Label(sender);
+            messageLbl.setStyle("-fx-background-color: #74b9ff; -fx-background-radius: 15; -fx-font-size: 18; -fx-font-weight: normal; -fx-text-fill: white; -fx-wrap-text: true; -fx-padding: 10; -fx-max-width: 350;");
+             hBoxName.setAlignment(Pos.CENTER_LEFT);
+            hBoxName.getChildren().add(messageLbl);
             ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(bytes)));
-            imageView.setPreserveRatio(true);
-            imageView.setFitHeight(180);
-            imageView.setFitWidth(180);
+            imageView.setFitHeight(200);
+            imageView.setFitWidth(200);
+            HBox hBox = new HBox();
+            hBox.setAlignment(Pos.CENTER_LEFT);
+            hBox.setPadding(new Insets(5,5,5,10));
+            hBox.getChildren().add(imageView);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    vBox.getChildren().add(hBoxName);
+                    vBox.getChildren().add(hBox);
+                }
+            });
 
-            hBox.getChildren().addAll(messageLbl, imageView);
-            vBox.getChildren().add(hBox);
-        });
     }
 
     public void btnSendImageOnAction(ActionEvent actionEvent) {
@@ -138,13 +145,13 @@ public class ChatClientController {
             try {
                 byte[] bytes = Files.readAllBytes(selectedFile.toPath());
                 HBox hBox = new HBox();
-                hBox.setStyle("-fx-fill-height: true; -fx-min-height: 50; -fx-pref-width: 520; -fx-max-width: 520; -fx-padding: 10; -fx-alignment: center-right;");
+                hBox.setStyle("-fx-fill-height: true;  -fx-min-height: 50; -fx-pref-width: 520; -fx-max-width: 520;-fx-padding: 10; -fx-alignment: center-right;");
 
-                // Display the image in an ImageView or any other UI component
+
                 ImageView imageView = new ImageView(new Image(new FileInputStream(selectedFile)));
                 imageView.setPreserveRatio(true);
-                imageView.setFitHeight(180);
-                imageView.setFitWidth(100);
+                imageView.setFitHeight(200);
+                imageView.setFitWidth(200);
 
                 hBox.getChildren().addAll(imageView);
                 vBox.getChildren().add(hBox);
